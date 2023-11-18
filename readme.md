@@ -6,6 +6,6 @@
 ### - load balancing with nginx
 ### - caching with redis
 ### - idempotency
-### - provisioning with terraform
-### - configuring with ansible
-### - github actions
+### Provisioning with terraform
+### Configuring with ansible
+### Github actions

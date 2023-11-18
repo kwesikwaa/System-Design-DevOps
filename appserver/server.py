@@ -1,5 +1,4 @@
-from fastapi import FastAPI,Request,logger
-import uvicorn
+from fastapi import FastAPI,logger
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -10,8 +9,3 @@ app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_
 @app.get('/enter')
 def firstfxn():
     return {"here":"akwaaba"}
-
-
-
-if __name__ =="__main__":
-    uvicorn.run(app,reload = True, port= 8000, host="0.0.0.0")    
