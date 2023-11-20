@@ -6,6 +6,8 @@
 ### - load balancing with nginx
 ### - caching with redis
 ### - idempotency
+### - rate limiting
 ### Provisioning with terraform
 ### Configuring with ansible
+### monitoring with prometheus and grafana
 ### Github actions
