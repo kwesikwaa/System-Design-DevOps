@@ -1,0 +1,5 @@
+-name: copy files to servers
+  copy:
+    src: /path
+    dest:
+    force: yes
