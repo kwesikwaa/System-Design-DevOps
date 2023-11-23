@@ -10,7 +10,14 @@ import (
 )
 
 func main() {
-	fmt.Println("init consumer")
+
+	if err := pocessRabbit(); err != nil {
+		// failed
+		fmt.Println("error no fit connect")
+	}
+}
+
+func pocessRabbit() error {
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
 
 	if err != nil {
@@ -27,17 +34,20 @@ func main() {
 	defer ch.Close()
 
 	msgs, err := ch.Consume(
-		"FirstQueue", "", true, false, false, false, nil,
+		"Order_Queue", "", true, false, false, false, nil,
 	)
+	if err != nil {
+		return err
+	}
 
-	forever := make(chan bool)
-	go func() {
-		for d := range msgs {
-			fmt.Println("Received Message: %v \n", d)
-		}
-	}()
+	// forever := make(chan bool)
+	// go func() {
+	// 	for d := range msgs {
+	// 		fmt.Println("Received Message: %v \n", d)
+	// 	}
+	// }()
 
-	fmt.Println("Successfully connected")
-	fmt.Println(" ~~ waiting for message")
-	<-forever
+	// fmt.Println("Successfully connected")
+	// fmt.Println(" ~~ waiting for message")
+	// <-forever
 }
