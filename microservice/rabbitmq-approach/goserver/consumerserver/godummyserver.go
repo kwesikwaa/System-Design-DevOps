@@ -5,6 +5,8 @@ package consumer
 
 import (
 	"fmt"
+
+	"github.com/streadway/amqp"
 )
 
 func main() {
@@ -31,7 +33,7 @@ func main() {
 	forever := make(chan bool)
 	go func() {
 		for d := range msgs {
-			fmt.Println("Received Message: %v \n", d.body)
+			fmt.Println("Received Message: %v \n", d)
 		}
 	}()
 

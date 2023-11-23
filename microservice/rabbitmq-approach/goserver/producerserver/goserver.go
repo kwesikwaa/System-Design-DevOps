@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/streadway/amqp"
 )
 
-func main(){
+func main() {
 	fmt.Println("init...")
 
-	conn,err := amqp.Dial("amqp://guest:guest@localhost:5672/")
-	if err != nil{
+	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	if err != nil {
 		fmt.Println(err)
 		panic(err)
 	}
@@ -18,15 +19,15 @@ func main(){
 
 	defer conn.Close()
 
-	ch,err := conn.Channel()
-	if err != nil{
+	ch, err := conn.Channel()
+	if err != nil {
 		fmt.Println(err)
 		panic(err)
 	}
 	defer ch.Close()
 
-	q,err :=  ch.QueueDeclare("FirstQueue",false,false,false,false,nil)
-	if err != nil{
+	q, err := ch.QueueDeclare("FirstQueue", false, false, false, false, nil)
+	if err != nil {
 		fmt.Println(err)
 		panic(err)
 	}
@@ -34,9 +35,9 @@ func main(){
 	fmt.Println(q)
 
 	err = ch.Publish(
-		"","FirstQueue",false,false,ampq.Publishing{
+		"", "FirstQueue", false, false, amqp.Publishing{
 			ContentType: "text/plain",
-			Body: []byte("Chale Im on your queue")
+			Body:        []byte("Chale Im on your queue"),
 		},
 	)
 
