@@ -77,7 +77,7 @@ func queueHandler(order Order) error {
 	defer ch.Close()
 
 	//declare a queue
-	q, err := ch.QueueDeclare("Order_Queue", false, false, false, false, nil)
+	q, err := ch.QueueDeclare("Order_Queue", true, false, false, false, nil)
 	if err != nil {
 		fmt.Println(err)
 		panic(err)
@@ -90,7 +90,7 @@ func queueHandler(order Order) error {
 	if err != nil {
 		// log
 	}
-	//send something to the queue
+	//publish to the queue
 	err = ch.Publish(
 		"", q.Name, false, false, amqp.Publishing{
 			ContentType: "application/json",
@@ -102,7 +102,7 @@ func queueHandler(order Order) error {
 		fmt.Println(err)
 		panic(err)
 	}
-	fmt.Println("Successfully published")
+	fmt.Println("Successfully published to queeu")
 
 	return nil
 }
