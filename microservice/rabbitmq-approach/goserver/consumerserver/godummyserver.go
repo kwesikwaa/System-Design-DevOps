@@ -40,14 +40,16 @@ func pocessRabbit() error {
 		return err
 	}
 
-	// forever := make(chan bool)
-	// go func() {
-	// 	for d := range msgs {
-	// 		fmt.Println("Received Message: %v \n", d)
-	// 	}
-	// }()
+	forever := make(chan bool)
+	go func() {
+		for d := range msgs {
+			fmt.Println("Received Message: %v \n", d)
+		}
+	}()
 
-	// fmt.Println("Successfully connected")
-	// fmt.Println(" ~~ waiting for message")
-	// <-forever
+	fmt.Println("Successfully connected")
+	fmt.Println(" ~~ waiting for message")
+	<-forever
+
+	return nil
 }
