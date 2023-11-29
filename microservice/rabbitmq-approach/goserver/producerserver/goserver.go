@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -25,9 +27,7 @@ func main() {
 	rest.POST("/order", orderHandler)
 
 	err := rest.Run(":8000")
-	if err != nil {
-		// log error message
-	}
+	errorhandler(err)
 }
 
 func orderHandler(c *gin.Context) {
@@ -59,10 +59,7 @@ func orderHandler(c *gin.Context) {
 func queueHandler(order Order) error {
 	//create connection
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
-	if err != nil {
-		fmt.Println(err)
-		panic(err)
-	}
+	errorhandler(err)
 
 	fmt.Println("Connected to Rabbit..")
 
@@ -70,39 +67,38 @@ func queueHandler(order Order) error {
 
 	//create channel
 	ch, err := conn.Channel()
-	if err != nil {
-		fmt.Println(err)
-		panic(err)
-	}
+	errorhandler(err)
 	defer ch.Close()
 
 	//declare a queue
 	q, err := ch.QueueDeclare("Order_Queue", true, false, false, false, nil)
-	if err != nil {
-		fmt.Println(err)
-		panic(err)
-	}
+	errorhandler(err)
 
 	fmt.Println(q)
 
 	// convert
 	corder, err := json.Marshal(order)
-	if err != nil {
-		// log
-	}
+	errorhandler(err)
+
 	//publish to the queue
-	err = ch.Publish(
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err = ch.PublishWithContext(ctx,
 		"", q.Name, false, false, amqp.Publishing{
 			ContentType: "application/json",
 			Body:        corder,
 		},
 	)
-
-	if err != nil {
-		fmt.Println(err)
-		panic(err)
-	}
+	errorhandler(err)
 	fmt.Println("Successfully published to queeu")
 
 	return nil
+}
+
+func errorhandler(err error) {
+	if err != nil {
+		// fmt.Println(msg)
+		panic(err)
+	}
 }

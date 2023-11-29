@@ -1,10 +1,21 @@
+// python3 -m grpc_tools.protoc -I protos/ --python_out=py_protos --grpc_python_out=py_protos hi.protos
+
 syntax =  "proto3";
 
-message Order {
+message OrderRequest {
     string orderid = 1;
     string userid = 2;
     string productname =3;
     int32 quantity = 4;
     double price = 5;
     double total = 6;
+}
+
+message OrderResponse{
+    string orderid =1;
+    string message =2;
+}
+
+service OrderService{
+    rpc CreateOrder (OrderRequest) returns (OrderResponse) {}
 }
