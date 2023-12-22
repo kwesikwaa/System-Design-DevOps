@@ -18,4 +18,6 @@ message OrderResponse{
 
 service OrderService{
     rpc CreateOrder (OrderRequest) returns (OrderResponse) {}
+    rpc GetOrders () returns (AllOrders){}
+    rpc CancelOrder () returns (){} 
 }

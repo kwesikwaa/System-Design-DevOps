@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 )
 
@@ -16,6 +15,6 @@ func errochecker(err error, msg string) {
 type OrderServer struct {
 }
 
-func (s *OrderServer) CreateOrder(ctx context.Context) error {
+// func (s *OrderServer) CreateOrder(ctx context.Context) error {
 
-}
+// }
