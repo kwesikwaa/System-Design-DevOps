@@ -9,11 +9,16 @@ message OrderRequest {
     int32 quantity = 4;
     double price = 5;
     double total = 6;
+    string status = 7;
 }
 
 message OrderResponse{
     string orderid =1;
     string message =2;
+}
+
+message AllOrders{
+    
 }
 
 service OrderService{

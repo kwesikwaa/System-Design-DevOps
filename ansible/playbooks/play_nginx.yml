@@ -1,20 +1,33 @@
 - name: install nginx on all servers
-  hosts: "webservers"
-  remote_user: root
+  hosts: webservers
+  remote_user: ansible
   become: true
   
   tasks:
-    - name: create nginx location
-      apt:
-        path:
-        state:
-
     - name: install nginx 
-      yum:
+      apt:
         name: nginx
         state: latest
-    
+
+    - name: apply nginx template
+      template:
+        src: .../nginx.conf
+        dest: /etc/nginx/sites-available/default
+        notify: restart nginx
+
+    - name: copy files try
+      copy:
+        src: "variable"
+        dest: /path
+        mode: preserve
+
     - name: start nginx
       service:
         name: nginx
         start: started
+  
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
